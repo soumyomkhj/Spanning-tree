@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include <stdbool.h>
 #define V 5
 int minKey(int key[], bool set_MST[]);
 int printMST(int parent[], int n, int graph[V][V]);
@@ -20,41 +21,43 @@ int main(void)
 
 int minKey(int key[], bool set_MST[])
 {
-   int min = INT_MAX, min;
-
-   for (int v = 0; v < V; v++)
-     if (set_MST[v] == false && key[v] < min)
-         min = key[v], min = v;
-
-   return min;
+  int v;
+  int min = INT_MAX, min_index;
+  for (v = 0; v < V; v++)
+  {
+  if (set_MST[v] == false && key[v] < min)
+      min = key[v], min_index = v;
+  }
+  return min_index;
 }
 
 int printMST(int parent[], int n, int graph[V][V])
 {
    printf("Edge   Weight\n");
-   for (int i = 1; i < V; i++)
+   int i;
+   for (i = 1; i < V; i++)
       printf("%d - %d    %d \n", parent[i], i, graph[i][parent[i]]);
 }
 
 void primeALGO(int graph[V][V])
 {
      int parent[V];
-     int key[V];
+     int key[V],i,count,v;
      bool set_MST[V];
 
-     for (int i = 0; i < V; i++)
+     for (i = 0; i < V; i++)
         key[i] = INT_MAX, set_MST[i] = false;
 
      key[0] = 0;
      parent[0] = -1;
 
-     for (int count = 0; count < V-1; count++)
+     for (count = 0; count < V-1; count++)
      {
         int u = minKey(key, set_MST);
 
         set_MST[u] = true;
 
-        for (int v = 0; v < V; v++)
+        for (v = 0; v < V; v++)
           if (graph[u][v] && set_MST[v] == false && graph[u][v] <  key[v])
              parent[v]  = u, key[v] = graph[u][v];
      }
